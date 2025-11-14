@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- Version: 2025-11-14-RATING-COUNT-FIX -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4P85NGNC3T"></script>
     <script>
@@ -585,6 +586,8 @@
                     <option value="downloads-asc">下载量(低到高)</option>
                     <option value="rating-desc">评分(高到低)</option>
                     <option value="rating-asc">评分(低到高)</option>
+                    <option value="ratingCount-desc">评分人数(高到低)</option>
+                    <option value="ratingCount-asc">评分人数(低到高)</option>
                     <option value="name-asc">名称(A-Z)</option>
                     <option value="name-desc">名称(Z-A)</option>
                 </select>
@@ -757,6 +760,29 @@
             return 0;
         }
 
+        // 解析评分人数字符串为数字（用于排序）
+        function parseRatingCount(ratingCountStr) {
+            if (!ratingCountStr || typeof ratingCountStr !== 'string') return 0;
+            try {
+                const str = ratingCountStr.trim();
+                // 处理 "61K" 格式
+                if (str.includes('K') || str.includes('k')) {
+                    const num = parseFloat(str.replace(/[Kk]/g, '').replace(/,/g, ''));
+                    return num * 1000;
+                }
+                // 处理 "2.8万" 格式
+                if (str.includes('万')) {
+                    const num = parseFloat(str.replace('万', '').replace(/,/g, ''));
+                    return num * 10000;
+                }
+                // 处理 "27,084" 或 "27084" 格式
+                const num = parseFloat(str.replace(/,/g, ''));
+                return isNaN(num) ? 0 : num;
+            } catch (e) {
+                return 0;
+            }
+        }
+
         // 应用筛选
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -771,30 +797,19 @@
                 const matchesSearch = plugin.name.toLowerCase().includes(searchTerm) ||
                                     plugin.description.toLowerCase().includes(searchTerm);
 
-                // 评分筛选
+                // 评分筛选（rating已经是数字类型）
                 let matchesRating = true;
                 if (ratingFilter !== 'all') {
                     const [min, max] = ratingFilter.split('-').map(Number);
-                    matchesRating = plugin.rating >= min && plugin.rating < max;
+                    const rating = plugin.rating || 0;
+                    matchesRating = rating >= min && rating < max;
                 }
 
-                // 开发者类型筛选
+                // 开发者类型筛选（JSON里没有此字段，暂时忽略）
                 let matchesTrader = true;
-                if (traderFilter === 'yes') {
-                    matchesTrader = plugin.is_trader === true;
-                } else if (traderFilter === 'no') {
-                    matchesTrader = plugin.is_trader === false;
-                }
 
-                // 大小筛选
+                // 大小筛选（JSON里没有此字段，暂时忽略）
                 let matchesSize = true;
-                if (sizeFilter !== 'all' && plugin.size) {
-                    const sizeMB = parseSizeToMB(plugin.size);
-                    if (sizeFilter === 'tiny') matchesSize = sizeMB < 1;
-                    else if (sizeFilter === 'small') matchesSize = sizeMB >= 1 && sizeMB < 5;
-                    else if (sizeFilter === 'medium') matchesSize = sizeMB >= 5 && sizeMB < 20;
-                    else if (sizeFilter === 'large') matchesSize = sizeMB >= 20;
-                }
 
                 return matchesSearch && matchesRating && matchesTrader && matchesSize;
             });
@@ -808,8 +823,12 @@
                     valueA = a.downloads;
                     valueB = b.downloads;
                 } else if (sortField === 'rating') {
-                    valueA = a.rating;
-                    valueB = b.rating;
+                    valueA = a.rating || 0;
+                    valueB = b.rating || 0;
+                } else if (sortField === 'ratingCount') {
+                    // 动态解析 rating_count 字符串为数字
+                    valueA = parseRatingCount(a.rating_count);
+                    valueB = parseRatingCount(b.rating_count);
                 } else if (sortField === 'name') {
                     valueA = a.name.toLowerCase();
                     valueB = b.name.toLowerCase();
@@ -847,10 +866,11 @@
             const pageData = filteredPlugins.slice(startIndex, endIndex);
 
             tbody.innerHTML = pageData.map((plugin, index) => {
-                // 评分信息
+                // 评分信息（rating已经是数字类型）
+                const rating = plugin.rating || 0;
                 const ratingInfo = plugin.rating_count
-                    ? `${plugin.rating.toFixed(1)} (${plugin.rating_count.toLocaleString()} 人评分)`
-                    : `${plugin.rating.toFixed(1)}`;
+                    ? `${rating.toFixed(1)} (${plugin.rating_count.toLocaleString()} 人评分)`
+                    : `${rating.toFixed(1)}`;
 
                 // 开发者类型
                 const traderBadge = plugin.is_trader === true
@@ -873,14 +893,14 @@
                             ${plugin.name}
                         </div>
                     </td>
-                    <td>${plugin.downloads_display}</td>
+                    <td>${plugin.downloads_display || '-'}</td>
                     <td>
-                        <span class="rating ${getRatingClass(plugin.rating)}" title="${ratingInfo}">
-                            ${plugin.rating.toFixed(1)}
+                        <span class="rating ${getRatingClass(rating)}" title="${ratingInfo}">
+                            ${rating.toFixed(1)}
                         </span>
                     </td>
                     <td style="font-size: 12px; color: #666;">
-                        ${plugin.rating_count ? plugin.rating_count.toLocaleString() : '-'}
+                        ${plugin.rating_count ? plugin.rating_count : '-'}
                     </td>
                     <td>
                         ${traderBadge}
@@ -891,7 +911,7 @@
                     <td style="font-size: 11px; color: #666;">
                         ${langDisplay}
                     </td>
-                    <td style="font-size: 11px; color: #666;">${plugin.last_updated}</td>
+                    <td style="font-size: 11px; color: #666;">${plugin.last_updated || '-'}</td>
                     <td>
                         <div class="description" title="${plugin.description}">
                             ${plugin.description}
