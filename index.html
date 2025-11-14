@@ -668,7 +668,15 @@
         // 加载JSON数据
         async function loadData() {
             try {
-                const response = await fetch('plugins_data_deduped.json');
+                // 优先加载minified版本(更小,加载更快)
+                let response;
+                try {
+                    response = await fetch('plugins_data_deduped.min.json');
+                    if (!response.ok) throw new Error('Minified version not found');
+                } catch (e) {
+                    console.log('Fallback to original JSON file');
+                    response = await fetch('plugins_data_deduped.json');
+                }
                 allPlugins = await response.json();
                 filteredPlugins = [...allPlugins];
 
