@@ -622,6 +622,9 @@
                 <strong>📄 当前页:</strong>
                 <span id="currentPageInfo">1 / 1</span>
             </div>
+            <div class="stats-item" id="loadingProgress" style="display: none; color: #3b82f6;">
+                <strong>⏳ 后台加载中...</strong>
+            </div>
         </div>
 
         <div class="table-container">
@@ -664,11 +667,39 @@
         let filteredPlugins = [];
         let currentPage = 1;
         let itemsPerPage = 50;
+        let isFullDataLoaded = false;
 
-        // 加载JSON数据
+        // 懒加载机制: 先加载首页数据,后台加载完整数据
         async function loadData() {
             try {
-                // 优先加载minified版本(更小,加载更快)
+                // 第一步: 快速加载首页数据(只有24KB)
+                document.getElementById('loading').textContent = '⚡ 正在快速加载首页数据...';
+                const initialResponse = await fetch('plugins_data_initial.json');
+                allPlugins = await initialResponse.json();
+                filteredPlugins = [...allPlugins];
+
+                // 立即显示第一页
+                document.getElementById('totalCount').textContent = '12,488';
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dataTable').style.display = 'table';
+                applyFilters();
+
+                // 第二步: 后台加载完整数据(不阻塞UI)
+                console.log('首页数据已显示,后台加载完整数据中...');
+                loadFullDataInBackground();
+
+            } catch (error) {
+                document.getElementById('loading').textContent = '❌ 加载失败: ' + error.message;
+            }
+        }
+
+        // 后台加载完整数据
+        async function loadFullDataInBackground() {
+            // 显示加载进度提示
+            const progressEl = document.getElementById('loadingProgress');
+            progressEl.style.display = 'flex';
+
+            try {
                 let response;
                 try {
                     response = await fetch('plugins_data_deduped.min.json');
@@ -677,16 +708,29 @@
                     console.log('Fallback to original JSON file');
                     response = await fetch('plugins_data_deduped.json');
                 }
-                allPlugins = await response.json();
+
+                const fullData = await response.json();
+                allPlugins = fullData;
                 filteredPlugins = [...allPlugins];
+                isFullDataLoaded = true;
 
-                document.getElementById('totalCount').textContent = allPlugins.length.toLocaleString();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('dataTable').style.display = 'table';
+                console.log('✅ 完整数据加载完成! 总计:', allPlugins.length, '条');
 
+                // 隐藏加载提示,显示成功提示
+                progressEl.innerHTML = '<strong style="color: #10b981;">✅ 全部数据已加载!</strong>';
+                setTimeout(() => {
+                    progressEl.style.display = 'none';
+                }, 3000);
+
+                // 重新应用当前的筛选条件
                 applyFilters();
+
             } catch (error) {
-                document.getElementById('loading').textContent = '❌ 加载失败: ' + error.message;
+                console.error('完整数据加载失败:', error);
+                progressEl.innerHTML = '<strong style="color: #ef4444;">⚠️ 完整数据加载失败</strong>';
+                setTimeout(() => {
+                    progressEl.style.display = 'none';
+                }, 5000);
             }
         }
 
