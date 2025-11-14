@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4P85NGNC3T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-4P85NGNC3T');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome插件蓝海工具 - 1.2w+插件数据</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #ffffff;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e5e5;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.7;
+            font-weight: 400;
+            margin: 0;
+            color: #666666;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 0 5px;
+        }
+
+        .controls {
+            padding: 25px 50px;
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 10px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: all 0.3s;
+            background: #ffffff;
+            color: #1a1a1a;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .control-group input::placeholder {
+            color: #999;
+        }
+
+        .stats {
+            padding: 20px 50px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .stats-item strong {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .stats-item span {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+
+        .table-container {
+            padding: 30px 50px;
+            overflow-x: auto;
+            background: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+        }
+
+        thead {
+            background: #f8f8f8;
+            color: #666;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f8f8f8;
+        }
+
+        tbody tr:nth-child(even) {
+            background: transparent;
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: #f8f8f8;
+        }
+
+        td {
+            padding: 14px 12px;
+            vertical-align: middle;
+            color: #1a1a1a;
+        }
+
+        .plugin-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .description {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .rating {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .rating-excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rating-good {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .rating-average {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .rating-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .plugin-link {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #3b82f6;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .plugin-link:hover {
+            background: #2563eb;
+        }
+
+        .pagination {
+            padding: 25px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #d0d0d0;
+            background: #ffffff;
+            color: #1a1a1a;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f0f0f0;
+            border-color: #b0b0b0;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-info {
+            padding: 8px 16px;
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            font-size: 18px;
+            color: #999;
+        }
+
+        .trader-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .trader-yes {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .trader-no {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .info-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e7f3ff;
+            color: #0066cc;
+            border-radius: 10px;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        .contact-info {
+            text-align: right;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .contact-info strong {
+            color: #666;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .contact-info div {
+            color: #1a1a1a;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .contact-info div strong {
+            color: #1a1a1a;
+            display: inline;
+            font-size: 14px;
+        }
+
+        .contact-info a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .contact-info a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .guide-section {
+            background: #fafafa;
+            padding: 25px 50px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .guide-section h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-section ol {
+            margin: 0;
+            padding: 0;
+            list-style: decimal;
+            list-style-position: inside;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .guide-section ol li {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 0;
+        }
+
+        .guide-section ol li::marker {
+            font-weight: 600;
+            color: #666;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 25px 30px;
+            }
+
+            .contact-info {
+                text-align: left;
+            }
+
+            .controls, .stats, .table-container, .pagination {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .guide-section {
+                padding: 20px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .table-container {
+                padding: 20px;
+            }
+
+            .guide-section {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+            }
+
+            .pagination {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="header-logo">🌊</div>
+                <div class="header-title">
+                    <h1>Chrome插件蓝海工具</h1>
+                    <p>持续收录中,目前有 1.2w+ 数据</p>
+                </div>
+            </div>
+            <div class="contact-info">
+                <strong>联系作者</strong>
+                <div>微信: <strong>XLG861</strong></div>
+                <div style="font-size: 11px; color: #666; margin-bottom: 8px;">(进小李哥AI海外产品围观群，100天月入千刀)</div>
+                <div>X: <a href="https://x.com/xiaolige688?s=21&t=hG43Dni21KbjPcHxf4izEQ" target="_blank">@xiaolige688</a></div>
+                <div style="font-size: 12px; color: #666; margin-top: 8px;">如果对大家有用，求转发一下X，持续更新数据</div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h3>📖 插件使用指南:</h3>
+            <ol>
+                <li>查看评分低、评分人数多的插件,寻找蓝海机会</li>
+                <li>查看评分高的插件,寻找优质提效插件</li>
+                <li>查看下载高的插件,开视眼,洞察用户需求</li>
+            </ol>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="searchInput">🔍 搜索插件</label>
+                <input type="text" id="searchInput" placeholder="输入插件名称或描述...">
+            </div>
+
+            <div class="control-group">
+                <label for="ratingFilter">⭐ 评分筛选</label>
+                <select id="ratingFilter">
+                    <option value="all">全部评分</option>
+                    <option value="4-5">4.0 - 5.0 (优秀)</option>
+                    <option value="3-4">3.0 - 4.0 (良好)</option>
+                    <option value="2-3">2.0 - 3.0 (一般)</option>
+                    <option value="0-2">0.0 - 2.0 (较差)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="traderFilter">🏢 开发者类型</label>
+                <select id="traderFilter">
+                    <option value="all">全部开发者</option>
+                    <option value="yes">🏢 交易者/公司</option>
+                    <option value="no">👤 个人开发者</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="sizeFilter">📦 插件大小</label>
+                <select id="sizeFilter">
+                    <option value="all">全部大小</option>
+                    <option value="tiny">< 1MB (轻量)</option>
+                    <option value="small">1MB - 5MB (小型)</option>
+                    <option value="medium">5MB - 20MB (中型)</option>
+                    <option value="large">> 20MB (大型)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="sortBy">📊 排序方式</label>
+                <select id="sortBy">
+                    <option value="downloads-desc">下载量(高到低)</option>
+                    <option value="downloads-asc">下载量(低到高)</option>
+                    <option value="rating-desc">评分(高到低)</option>
+                    <option value="rating-asc">评分(低到高)</option>
+                    <option value="name-asc">名称(A-Z)</option>
+                    <option value="name-desc">名称(Z-A)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="perPage">📄 每页显示</label>
+                <select id="perPage">
+                    <option value="25">25 条</option>
+                    <option value="50" selected>50 条</option>
+                    <option value="100">100 条</option>
+                    <option value="200">200 条</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stats-item">
+                <strong>📊 总计:</strong>
+                <span id="totalCount">0</span> 个插件
+            </div>
+            <div class="stats-item">
+                <strong>🔍 筛选结果:</strong>
+                <span id="displayCount">0</span> 个插件
+            </div>
+            <div class="stats-item">
+                <strong>🏢 交易者:</strong>
+                <span id="traderCount">0</span> 个
+            </div>
+            <div class="stats-item">
+                <strong>👤 个人:</strong>
+                <span id="individualCount">0</span> 个
+            </div>
+            <div class="stats-item">
+                <strong>📄 当前页:</strong>
+                <span id="currentPageInfo">1 / 1</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div id="loading" class="loading">正在加载增强数据...</div>
+            <table id="dataTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">#</th>
+                        <th style="width: 200px;">插件名称</th>
+                        <th style="width: 100px;">下载量</th>
+                        <th style="width: 60px;">评分</th>
+                        <th style="width: 80px;">评分人数</th>
+                        <th style="width: 100px;">开发者类型</th>
+                        <th style="width: 80px;">插件大小</th>
+                        <th style="width: 80px;">支持语言</th>
+                        <th style="width: 90px;">最后更新</th>
+                        <th>描述</th>
+                        <th style="width: 80px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+            <div id="noResults" class="no-results" style="display: none;">
+                😕 没有找到匹配的插件
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button id="firstPage">⏮️ 首页</button>
+            <button id="prevPage">⬅️ 上一页</button>
+            <span class="page-info" id="pageInfo">第 1 页</span>
+            <button id="nextPage">下一页 ➡️</button>
+            <button id="lastPage">末页 ⏭️</button>
+        </div>
+    </div>
+
+    <script>
+        let allPlugins = [];
+        let filteredPlugins = [];
+        let currentPage = 1;
+        let itemsPerPage = 50;
+
+        // 加载JSON数据
+        async function loadData() {
+            try {
+                const response = await fetch('plugins_data_deduped.json');
+                allPlugins = await response.json();
+                filteredPlugins = [...allPlugins];
+
+                document.getElementById('totalCount').textContent = allPlugins.length.toLocaleString();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dataTable').style.display = 'table';
+
+                applyFilters();
+            } catch (error) {
+                document.getElementById('loading').textContent = '❌ 加载失败: ' + error.message;
+            }
+        }
+
+        // 获取评分等级
+        function getRatingClass(rating) {
+            if (rating >= 4.0) return 'rating-excellent';
+            if (rating >= 3.0) return 'rating-good';
+            if (rating >= 2.0) return 'rating-average';
+            return 'rating-poor';
+        }
+
+        // 解析插件大小(转成MB)
+        function parseSizeToMB(sizeStr) {
+            if (!sizeStr) return 0;
+            try {
+                const match = sizeStr.match(/([\d.]+)\s*([KM]iB)/);
+                if (match) {
+                    const value = parseFloat(match[1]);
+                    const unit = match[2];
+                    if (unit === 'MiB') return value;
+                    if (unit === 'KiB') return value / 1024;
+                }
+            } catch (e) {}
+            return 0;
+        }
+
+        // 应用筛选
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const ratingFilter = document.getElementById('ratingFilter').value;
+            const traderFilter = document.getElementById('traderFilter').value;
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            // 筛选
+            filteredPlugins = allPlugins.filter(plugin => {
+                // 搜索筛选
+                const matchesSearch = plugin.name.toLowerCase().includes(searchTerm) ||
+                                    plugin.description.toLowerCase().includes(searchTerm);
+
+                // 评分筛选
+                let matchesRating = true;
+                if (ratingFilter !== 'all') {
+                    const [min, max] = ratingFilter.split('-').map(Number);
+                    matchesRating = plugin.rating >= min && plugin.rating < max;
+                }
+
+                // 开发者类型筛选
+                let matchesTrader = true;
+                if (traderFilter === 'yes') {
+                    matchesTrader = plugin.is_trader === true;
+                } else if (traderFilter === 'no') {
+                    matchesTrader = plugin.is_trader === false;
+                }
+
+                // 大小筛选
+                let matchesSize = true;
+                if (sizeFilter !== 'all' && plugin.size) {
+                    const sizeMB = parseSizeToMB(plugin.size);
+                    if (sizeFilter === 'tiny') matchesSize = sizeMB < 1;
+                    else if (sizeFilter === 'small') matchesSize = sizeMB >= 1 && sizeMB < 5;
+                    else if (sizeFilter === 'medium') matchesSize = sizeMB >= 5 && sizeMB < 20;
+                    else if (sizeFilter === 'large') matchesSize = sizeMB >= 20;
+                }
+
+                return matchesSearch && matchesRating && matchesTrader && matchesSize;
+            });
+
+            // 排序
+            const [sortField, sortOrder] = sortBy.split('-');
+            filteredPlugins.sort((a, b) => {
+                let valueA, valueB;
+
+                if (sortField === 'downloads') {
+                    valueA = a.downloads;
+                    valueB = b.downloads;
+                } else if (sortField === 'rating') {
+                    valueA = a.rating;
+                    valueB = b.rating;
+                } else if (sortField === 'name') {
+                    valueA = a.name.toLowerCase();
+                    valueB = b.name.toLowerCase();
+                }
+
+                if (sortOrder === 'asc') {
+                    return valueA > valueB ? 1 : -1;
+                } else {
+                    return valueA < valueB ? 1 : -1;
+                }
+            });
+
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        }
+
+        // 渲染表格
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const dataTable = document.getElementById('dataTable');
+            const noResults = document.getElementById('noResults');
+
+            if (filteredPlugins.length === 0) {
+                dataTable.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            dataTable.style.display = 'table';
+            noResults.style.display = 'none';
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredPlugins.length);
+            const pageData = filteredPlugins.slice(startIndex, endIndex);
+
+            tbody.innerHTML = pageData.map((plugin, index) => {
+                // 评分信息
+                const ratingInfo = plugin.rating_count
+                    ? `${plugin.rating.toFixed(1)} (${plugin.rating_count.toLocaleString()} 人评分)`
+                    : `${plugin.rating.toFixed(1)}`;
+
+                // 开发者类型
+                const traderBadge = plugin.is_trader === true
+                    ? '<span class="trader-badge trader-yes">🏢 交易者</span>'
+                    : plugin.is_trader === false
+                    ? '<span class="trader-badge trader-no">👤 个人</span>'
+                    : '<span style="color: #999; font-size: 11px;">-</span>';
+
+                // 插件大小
+                const sizeDisplay = plugin.size || '<span style="color: #999; font-size: 11px;">-</span>';
+
+                // 支持语言
+                const langDisplay = plugin.language || '<span style="color: #999; font-size: 11px;">-</span>';
+
+                return `
+                <tr>
+                    <td>${startIndex + index + 1}</td>
+                    <td>
+                        <div class="plugin-name" title="${plugin.name}">
+                            ${plugin.name}
+                        </div>
+                    </td>
+                    <td>${plugin.downloads_display}</td>
+                    <td>
+                        <span class="rating ${getRatingClass(plugin.rating)}" title="${ratingInfo}">
+                            ${plugin.rating.toFixed(1)}
+                        </span>
+                    </td>
+                    <td style="font-size: 12px; color: #666;">
+                        ${plugin.rating_count ? plugin.rating_count.toLocaleString() : '-'}
+                    </td>
+                    <td>
+                        ${traderBadge}
+                    </td>
+                    <td style="font-size: 12px; color: #666;">
+                        ${sizeDisplay}
+                    </td>
+                    <td style="font-size: 11px; color: #666;">
+                        ${langDisplay}
+                    </td>
+                    <td style="font-size: 11px; color: #666;">${plugin.last_updated}</td>
+                    <td>
+                        <div class="description" title="${plugin.description}">
+                            ${plugin.description}
+                        </div>
+                    </td>
+                    <td>
+                        <a href="${plugin.url}" target="_blank" class="plugin-link">
+                            查看
+                        </a>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            // 更新统计信息
+            document.getElementById('displayCount').textContent = filteredPlugins.length.toLocaleString();
+            document.getElementById('currentPageInfo').textContent =
+                `${currentPage} / ${Math.ceil(filteredPlugins.length / itemsPerPage)}`;
+
+            // 统计交易者和个人开发者数量
+            const traderCount = filteredPlugins.filter(p => p.is_trader === true).length;
+            const individualCount = filteredPlugins.filter(p => p.is_trader === false).length;
+            document.getElementById('traderCount').textContent = traderCount.toLocaleString();
+            document.getElementById('individualCount').textContent = individualCount.toLocaleString();
+        }
+
+        // 渲染分页
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredPlugins.length / itemsPerPage);
+            const pageInfo = document.getElementById('pageInfo');
+            const firstPage = document.getElementById('firstPage');
+            const prevPage = document.getElementById('prevPage');
+            const nextPage = document.getElementById('nextPage');
+            const lastPage = document.getElementById('lastPage');
+
+            pageInfo.textContent = `第 ${currentPage} / ${totalPages} 页`;
+
+            firstPage.disabled = currentPage === 1;
+            prevPage.disabled = currentPage === 1;
+            nextPage.disabled = currentPage === totalPages;
+            lastPage.disabled = currentPage === totalPages;
+        }
+
+        // 翻页
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredPlugins.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            renderTable();
+            renderPagination();
+
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 事件监听
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('ratingFilter').addEventListener('change', applyFilters);
+        document.getElementById('traderFilter').addEventListener('change', applyFilters);
+        document.getElementById('sizeFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortBy').addEventListener('change', applyFilters);
+        document.getElementById('perPage').addEventListener('change', function() {
+            itemsPerPage = parseInt(this.value);
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        });
+
+        document.getElementById('firstPage').addEventListener('click', () => goToPage(1));
+        document.getElementById('prevPage').addEventListener('click', () => goToPage(currentPage - 1));
+        document.getElementById('nextPage').addEventListener('click', () => goToPage(currentPage + 1));
+        document.getElementById('lastPage').addEventListener('click', () => goToPage(Math.ceil(filteredPlugins.length / itemsPerPage)));
+
+        // 初始化
+        loadData();
+    </script>
+</body>
+</html>
